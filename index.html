@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ARSEN HACK (ARIOSTO PRUDENZIANO) Quiz Concorso Polizia Locale Napoli 2026</title>
+<title>Quiz Concorso Polizia Locale Napoli</title>
 <style>
 :root{--bg:#f3f6fb;--card:#fff;--ink:#172033;--muted:#667085;--blue:#174ea6;--line:#d9e1ef;--good:#137547;--bad:#b42318}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
@@ -24,20 +24,20 @@ a{color:#174ea6}
 </head>
 <body>
 <header><div class="wrap">
-<h1>ARSEN HACK (ARIOSTO PRUDENZIANO) – Quiz Concorso Polizia Locale Napoli 2026</h1>
-<p>Simulatore di esercitazione con correzione immediata, punteggio e modalità simulazione.</p>
-<p class="small" style="color:#e7efff">Archivio didattico di 2.000 quesiti e varianti per esercitazione:è una banca dati ufficiale del Comune di Napoli.</p>
+<h1>Quiz concorso Polizia Locale – Napoli</h1>
+<p>2.000 quesiti didattici in ordine casuale. Simulazioni da 10, 20, 30 o 40 domande.</p>
+<p class="small" style="color:#e7efff">Banca didattica di 2.000 quesiti unici generati per l’allenamento: non è un archivio ufficiale del concorso.</p>
 </div></header>
 <main class="wrap">
-<div class="notice"><strong>Simulazione d’esame:</strong> 40 domande casuali per sessione. Obiettivo: massimo 5 errori (almeno 35 risposte corrette). Dal 6° errore la prova risulta non superata. Le domande sono per esercitazione e costituiscono un archivio ufficiale verifica sempre il bando del Comune di Napoli e la normativa vigente.</div>
+<div class="notice"><strong>Nota importante:</strong> le materie e le modalità effettive dipendono dal bando specifico del Comune di Napoli. Verifica sempre il bando e gli eventuali aggiornamenti ufficiali. I quesiti normativi sono da ripassare sul testo vigente.</div>
 <section class="panel" id="setup">
 <h2 style="margin-top:0">Imposta la sessione</h2>
 <div class="controls">
 <div class="field"><label for="subject">Materia</label><select id="subject"><option value="all">Tutte le materie</option></select></div>
-<div class="field"><label for="count">Numero quesiti</label><select id="count" disabled><option value="40" selected>40 domande</option></select></div>
-<div class="field"><label for="mode">Modalità</label><select id="mode"><option value="exam" selected>Simulazione concorso</option><option value="practice">Allenamento (correzione subito)</option></select></div>
+<div class="field"><label for="count">Numero quesiti</label><select id="count"><option>10</option><option selected>20</option><option>30</option><option>40</option></select></div>
+<div class="field"><label for="mode">Modalità</label><select id="mode"><option value="practice">Allenamento (correzione subito)</option><option value="exam">Simulazione (correzione alla fine)</option></select></div>
 </div>
-<div class="stats"><span class="stat" id="bankCount">Quesiti disponibili: —</span><span class="stat">Soglia: massimo 5 errori</span></div>
+<div class="stats"><span class="stat" id="bankCount">Quesiti disponibili: —</span><span class="stat">Risposte salvate solo in questa sessione</span></div>
 <button id="start">Inizia quiz</button>
 </section>
 <section id="quizArea" class="hidden">
@@ -49,11 +49,10 @@ a{color:#174ea6}
 <div class="actions"><button class="secondary" id="back">← Precedente</button><button id="next">Successiva →</button><button class="hidden" id="finish">Termina e correggi</button></div>
 </section>
 <section id="results" class="panel hidden"></section>
-<footer>Creato da ARSEN HACK per esercitazione personale. Archivio didattico con varianti automatiche, ufficiale: verifica sempre bando, programma e normativa vigente.</footer>
+<footer>Uso personale per lo studio. Prima di affidarti a un quesito di diritto, controlla la versione vigente della norma e il programma del bando ufficiale.</footer>
 </main>
 <script>
-const baseBank = [
-
+const bank = [
 {c:"Codice della strada",q:"In via generale, a quale organo spetta la funzione di regolazione della circolazione sulle strade comunali, nell'ambito delle competenze previste dalla legge?",o:["Al Comune, tramite gli organi competenti","Esclusivamente al Prefetto","Sempre al Ministero della Giustizia","Esclusivamente al proprietario del veicolo"],a:0,e:"La regolazione della circolazione urbana rientra nelle competenze degli enti e organi individuati dal Codice della strada e dalla normativa locale."},
 {c:"Codice della strada",q:"Il segnale di STOP impone al conducente di:",o:["Rallentare soltanto se vede altri veicoli","Fermarsi e dare precedenza secondo le regole applicabili","Suonare il clacson prima dell'incrocio","Fermarsi solo di notte"],a:1,e:"Lo STOP impone l'arresto in corrispondenza della linea o, se assente, nel punto previsto, e l'obbligo di dare precedenza."},
 {c:"Codice della strada",q:"La patente di guida può essere ritirata dagli organi accertatori:",o:["Mai, in nessuna circostanza","Nei casi previsti dal Codice della strada","Solo su richiesta dell'assicurazione","Soltanto da un giudice civile"],a:1,e:"Il ritiro è una misura prevista dal Codice della strada in specifiche ipotesi."},
@@ -96,56 +95,83 @@ const baseBank = [
 {c:"Costituzione",q:"L'articolo 97 della Costituzione riguarda, tra l'altro:",o:["Il buon andamento e l'imparzialità della pubblica amministrazione","Il diritto di voto dei cittadini all'estero soltanto","La libertà di domicilio esclusivamente","La bandiera italiana"],a:0,e:"L'art. 97 Cost. richiama buon andamento e imparzialità della pubblica amministrazione."},
 {c:"Polizia amministrativa",q:"Quando un atto amministrativo presenta un vizio, la sua legittimità va valutata:",o:["Alla luce delle norme applicabili, dei fatti e delle competenze dell'autorità","In base alla popolarità dell'atto sui social","Solo in base alla lunghezza del documento","Esclusivamente secondo l'opinione del destinatario"],a:0,e:"La legittimità dipende dal rispetto di legge, competenza, procedimento, presupposti e motivazione quando richiesta."}
 ];
-
-// Espansione didattica: varianti formulate a partire dai quesiti base.
-// È un archivio ufficiale del Comune di Napoli con una banca dati ministeriale.
-function buildBank(){
-  const bank = baseBank.map((q,i)=>({...q,id:`base-${i}`}));
-  const prefixes = [
-    "Nel contesto della preparazione al concorso, ",
-    "Ai fini del ripasso per la Polizia Locale, ",
-    "In una domanda d'esame, ",
-    "Considerando la disciplina generale, ",
-    "Per verificare la conoscenza della materia, ",
-    "Secondo i principi generali applicabili, ",
-    "Nell'ambito delle funzioni dell'operatore, ",
-    "Con riferimento alla normativa studiata, "
-  ];
-  const suffixes = [
-    " Individua l'alternativa corretta.",
-    " Seleziona la risposta più corretta.",
-    " Quale opzione è conforme ai principi indicati?",
-    " Scegli la risposta da considerare esatta.",
-    " Quale affermazione è corretta?"
-  ];
-  // Le varianti mantengono la risposta del quesito di partenza.
-  // Il numero di varianti è sufficiente a portare il totale a 2.000.
-  let n=0;
-  for(let i=0; bank.length<2000; i++){
-    const q=baseBank[i % baseBank.length];
-    const p=prefixes[Math.floor(i/baseBank.length)%prefixes.length];
-    const s=suffixes[Math.floor(i/(baseBank.length*prefixes.length))%suffixes.length];
-    const copy={
-      ...q,
-      id:`var-${n++}`,
-      q: p + q.q.charAt(0).toLowerCase() + q.q.slice(1).replace(/[?]$/,'') + s
-    };
-    bank.push(copy);
-  }
-  return bank;
+// Estensione della banca: quesiti generati con dati e scenari variabili.
+// I quesiti sono didattici e non sono presentati come domande ufficiali del Comune.
+const shuffle = arr => { const a=arr.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const variantAreas=['centro storico','zona residenziale','area scolastica','asse commerciale','zona periferica','area pedonale','incrocio urbano','area di mercato','zona di cantiere','presso un ufficio','area di parcheggio','strada extraurbana','zona ospedaliera','area sportiva','presso una fermata','area a traffico limitato','zona turistica','area industriale','presso una piazza','tratto stradale'];
+const variantTasks=['controllo documentale','verifica degli atti','servizio di pattuglia','gestione delle segnalazioni','accertamento amministrativo','tutela della sicurezza','rapporto con il cittadino','organizzazione del turno','verifica procedurale','attività di prevenzione','controllo della circolazione','redazione del verbale','gestione della pratica','supporto operativo','presidio del territorio','analisi del caso','servizio al pubblico','verifica normativa','attività di ufficio','simulazione concorsuale'];
+function addQ(c,q,opts,correct,explain){
+  const variantIndex=bank.length-40;
+  if(variantIndex>=0) q += ` (contesto: ${variantAreas[Math.floor(variantIndex/20)%variantAreas.length]}, ${variantTasks[variantIndex%variantTasks.length]})`;
+  const decorated=opts.map((text,i)=>({text,ok:i===correct}));
+  const mixed=shuffle(decorated);
+  bank.push({c,q,o:mixed.map(x=>x.text),a:mixed.findIndex(x=>x.ok),e:explain});
 }
-const bank = buildBank();
+const mathNames=['controllo di un turno','verifica di un registro','pianificazione del servizio','calcolo dei verbali','organizzazione di pattuglie','controllo di una pratica','gestione di un archivio','riepilogo delle segnalazioni','preparazione di un rapporto','programmazione del presidio'];
+const mathContexts=['nel turno mattutino','nel turno pomeridiano','durante un controllo urbano','nella pianificazione settimanale','nel riepilogo delle attività','in un esercizio di preselezione','durante un servizio di pattuglia','nella gestione delle segnalazioni','nel controllo dei dati','in una verifica amministrativa','nella preparazione del rapporto','durante un presidio stradale','nel conteggio delle pratiche','nella programmazione del personale','in un controllo di routine','durante un servizio serale','nella verifica dei tempi','nel calcolo delle risorse','in una simulazione d’esame','durante un’attività di ufficio'];
+let serial=0;
+// 700 esercizi numerici distinti su proporzioni, percentuali, orari e sequenze.
+for(let i=1; i<=700; i++){
+  const kind=i%4, name=mathNames[i%mathNames.length];
+  if(kind===0){
+    const a=11+(i*7)%89, b=2+(i*3)%17, correct=a*b;
+    addQ('Logica e comprensione',`Per il ${name} ${mathContexts[i%mathContexts.length]}, ogni gruppo contiene ${b} elementi e i gruppi sono ${a}. Quanti elementi ci sono in totale?`,[String(correct),String(correct+b),String(correct-b),String(a+b)],0,`Si moltiplica il numero dei gruppi per gli elementi di ciascun gruppo: ${a} × ${b} = ${correct}.`);
+  } else if(kind===1){
+    const start=7+(i%9), mins=(i*13)%55+5, hours=1+(i%7), total=start*60+hours*60+mins; const h=Math.floor(total/60)%24, m=total%60; const fmt=x=>String(x).padStart(2,'0'); const correct=`${fmt(h)}:${fmt(m)}`;
+    const wrong=[`${fmt((h+1)%24)}:${fmt(m)}`,`${fmt(h)}:${fmt((m+10)%60)}`,`${fmt((h+23)%24)}:${fmt(m)}`];
+    addQ('Logica e comprensione',`Per ${mathContexts[i%mathContexts.length]}, un servizio inizia alle ${fmt(start)}:00 e dura ${hours} ore e ${mins} minuti. A che ora termina?`,[correct,...wrong],0,`Si sommano durata e orario iniziale: il termine è ${correct}.`);
+  } else if(kind===2){
+    const n=20+(i*11)%180, pct=[5,10,15,20,25,30,40,50][i%8], correct=n*pct/100;
+    const opts=[String(correct),String(correct+pct),String(Math.max(0,correct-pct)),String(n-correct)];
+    addQ('Logica e comprensione',`Durante ${mathContexts[i%mathContexts.length]}, in un totale di ${n} pratiche, il ${pct}% richiede un controllo aggiuntivo. Quante pratiche sono?`,opts,0,`Il ${pct}% di ${n} si calcola moltiplicando ${n} per ${pct}/100: il risultato è ${correct}.`);
+  } else {
+    const a=2+(i%15), step=2+(i%9), b=a+step, c=b+step, d=c+step, correct=d+step;
+    addQ('Logica e comprensione',`In un esercizio di logica ${mathContexts[i%mathContexts.length]}, individua il termine successivo della sequenza: ${a}, ${b}, ${c}, ${d}, …`,[String(correct),String(correct+step),String(correct-1),String(d*2)],0,`La sequenza aumenta ogni volta di ${step}; quindi ${d} + ${step} = ${correct}.`);
+  }
+  serial++;
+}
+// 1.260 quesiti situazionali e di conoscenza applicata su materie tipiche dei concorsi.
+const scenarios=[
+ {c:'Codice della strada',topic:'segnaletica temporanea',prompt:'Durante un intervento stradale viene modificata temporaneamente la viabilità. Qual è la condotta più corretta?',right:'Verificare che la segnaletica temporanea sia coerente, visibile e conforme alle prescrizioni applicabili',wrong:['Lasciare la segnaletica coperta fino alla fine del turno','Affidarsi esclusivamente alle indicazioni verbali degli automobilisti','Rimuovere i segnali permanenti senza valutare il piano di segnalamento'],exp:'La segnaletica temporanea deve rendere comprensibile e sicura la modifica della circolazione, secondo le regole applicabili.'},
+ {c:'Codice della strada',topic:'attraversamento pedonale',prompt:'Avvicinandosi a un attraversamento pedonale con persone che stanno per attraversare, il conducente deve:',right:'Adottare prudenza e dare la precedenza nei casi previsti dal Codice della strada',wrong:['Accelerare per liberare rapidamente il passaggio','Suonare il clacson come sostituto della precedenza','Fermarsi solo se lo richiede un altro conducente'],exp:'Il Codice della strada impone specifici obblighi di prudenza e precedenza nei confronti dei pedoni.'},
+ {c:'Diritto amministrativo',topic:'motivazione del provvedimento',prompt:'Nel predisporre un provvedimento amministrativo, l’ufficio deve normalmente:',right:'Indicare i presupposti di fatto e le ragioni giuridiche della decisione, salvo eccezioni di legge',wrong:['Limitarsi sempre a una formula generica','Omettere ogni motivazione anche quando richiesta','Inserire valutazioni personali estranee al procedimento'],exp:'La legge 241/1990 prevede in via generale l’obbligo di motivazione, con le eccezioni stabilite dalla legge.'},
+ {c:'Diritto amministrativo',topic:'accesso documentale',prompt:'Una persona chiede accesso documentale ai sensi della legge 241/1990. L’ufficio valuta in particolare:',right:'La presenza di un interesse diretto, concreto e attuale collegato al documento',wrong:['Soltanto il numero di follower del richiedente','La residenza obbligatoria nel Comune in ogni caso','La disponibilità del richiedente a pagare una sanzione'],exp:'L’accesso documentale richiede normalmente un interesse diretto, concreto e attuale corrispondente a una situazione tutelata.'},
+ {c:'Ordinamento enti locali',topic:'competenze dirigenziali',prompt:'Nell’ordinamento comunale, la gestione amministrativa, finanziaria e tecnica è attribuita, secondo il TUEL, principalmente:',right:'Ai dirigenti, nell’ambito delle attribuzioni previste',wrong:['Sempre al Consiglio comunale collegialmente','Esclusivamente al corpo elettorale','A un soggetto scelto casualmente dagli utenti'],exp:'L’art. 107 del D.Lgs. 267/2000 disciplina le funzioni e responsabilità della dirigenza.'},
+ {c:'Polizia amministrativa',topic:'verbale di accertamento',prompt:'Redigendo un verbale di accertamento, l’operatore deve privilegiare:',right:'Una descrizione chiara, precisa e oggettiva dei fatti e degli elementi richiesti',wrong:['Giudizi personali non pertinenti','L’omissione degli elementi disponibili','Formulazioni ambigue per abbreviare il testo'],exp:'La precisione e l’oggettività dell’atto sono essenziali per la comprensione dei fatti e per il rispetto delle garanzie procedurali.'},
+ {c:'Polizia amministrativa',topic:'sanzioni amministrative',prompt:'Prima di applicare una sanzione amministrativa, l’operatore deve verificare:',right:'La base normativa, i presupposti della violazione e la procedura applicabile',wrong:['Soltanto se il destinatario è conosciuto personalmente','Se la sanzione è gradita ai presenti','Se l’importo può essere scelto liberamente'],exp:'Il principio di legalità richiede una base normativa e il rispetto dei presupposti e delle procedure previste.'},
+ {c:'Diritto penale',topic:'elemento soggettivo',prompt:'Per distinguere dolo e colpa nell’analisi di un fatto, è necessario considerare:',right:'La rappresentazione e volontà dell’agente e le regole cautelari rilevanti, secondo la legge',wrong:['Soltanto il luogo in cui è avvenuto il fatto','Esclusivamente l’età del testimone','La popolarità della persona coinvolta'],exp:'Dolo e colpa sono forme diverse dell’elemento soggettivo e vanno valutate secondo le definizioni legali.'},
+ {c:'Procedura penale',topic:'attività di polizia giudiziaria',prompt:'Nello svolgimento di attività di polizia giudiziaria, l’operatore deve:',right:'Rispettare competenze, obblighi e procedure previsti dal codice di procedura penale',wrong:['Sostituirsi al giudice nell’emanazione della sentenza','Diffondere pubblicamente gli atti senza valutazioni','Promettere l’impunità in cambio di dichiarazioni'],exp:'Le funzioni di polizia giudiziaria sono esercitate nel quadro e nei limiti stabiliti dalla legge.'},
+ {c:'Privacy',topic:'minimizzazione dei dati',prompt:'Nel raccogliere dati personali per una finalità istituzionale, l’ufficio dovrebbe:',right:'Limitarsi ai dati adeguati, pertinenti e necessari rispetto alla finalità',wrong:['Raccogliere ogni dato possibile per usi futuri indeterminati','Pubblicare i dati per rendere il procedimento più rapido','Conservare tutto senza limiti o finalità'],exp:'Il principio di minimizzazione del GDPR limita il trattamento ai dati necessari rispetto alle finalità dichiarate.'},
+ {c:'Pubblico impiego',topic:'conflitto di interessi',prompt:'Se un dipendente pubblico rileva una possibile situazione di conflitto di interessi, deve:',right:'Segnalare la situazione secondo le regole e le procedure dell’amministrazione',wrong:['Nasconderla per concludere più rapidamente','Favorire automaticamente il conoscente','Trasferire documenti riservati a soggetti esterni'],exp:'Le regole di comportamento pubblico richiedono di prevenire e gestire i conflitti di interessi secondo la disciplina applicabile.'},
+ {c:'Informatica',topic:'phishing',prompt:'Un messaggio inatteso chiede credenziali tramite un link urgente e sospetto. È prudente:',right:'Non usare il link e verificare la richiesta tramite un canale ufficiale indipendente',wrong:['Inserire subito la password per evitare il blocco','Inoltrare il messaggio a tutti i contatti','Disattivare ogni protezione del dispositivo'],exp:'La verifica indipendente e il mancato inserimento di credenziali in link sospetti riducono il rischio di phishing.'},
+ {c:'Etica e servizio al cittadino',topic:'comunicazione con il pubblico',prompt:'Un cittadino protesta in modo agitato per un controllo. La risposta professionale consiste nel:',right:'Mantenere la calma, ascoltare e spiegare con chiarezza le ragioni e le procedure',wrong:['Rispondere con provocazioni','Minacciare conseguenze estranee alla legge','Ignorare ogni richiesta di chiarimento'],exp:'Calma, imparzialità e chiarezza aiutano a gestire il confronto e a mantenere un comportamento professionale.'},
+ {c:'Costituzione',topic:'imparzialità amministrativa',prompt:'Il principio di imparzialità della pubblica amministrazione richiede di:',right:'Agire senza favoritismi e secondo criteri legittimi e obiettivi',wrong:['Favorire amici e parenti','Decidere in base a simpatie personali','Applicare regole diverse senza ragione giuridica'],exp:'L’art. 97 della Costituzione richiama buon andamento e imparzialità della pubblica amministrazione.'},
+ {c:'Inglese',topic:'lessico di servizio',prompt:'In inglese, l’espressione “Please show me your driving licence” significa:',right:'Per favore, mi mostri la patente di guida',wrong:['Per favore, parcheggi il veicolo','La strada è chiusa oggi','Deve pagare il biglietto'],exp:'“Driving licence” significa patente di guida e “show me” significa “mi mostri”.'}
+];
+const openings=['Nel corso di un servizio ordinario,','Durante un controllo sul territorio,','Nel gestire una pratica d’ufficio,','In una situazione operativa tipica,','Durante un’attività di vigilanza,','Nell’ambito delle proprie funzioni,','In occasione di un accertamento,','Nel rapporto con il pubblico,','Durante la verifica di una procedura,','In un caso pratico da concorso,'];
+const contexts=['in centro città','in una zona residenziale','durante il turno mattutino','durante il turno serale','in un’area con traffico intenso','in una strada secondaria','presso uno sportello comunale','in un controllo documentale','durante un servizio programmato','in presenza di più utenti','in una situazione non urgente','nel corso di un’attività coordinata','durante una verifica sul posto','in un caso che richiede verbalizzazione','nel rispetto delle competenze assegnate','in una procedura ordinaria','durante una richiesta di chiarimenti','in un’attività di prevenzione','nell’ambito di un servizio comunale','durante una simulazione concorsuale'];
+const endings=['Qual è la scelta più corretta?','Quale comportamento è conforme ai principi applicabili?','Quale risposta è più appropriata?','Come dovrebbe procedere l’operatore?','Quale soluzione rispetta la disciplina generale?','Individua l’opzione più corretta.','Qual è la condotta professionalmente adeguata?','Quale criterio va seguito?','Quale alternativa è coerente con le regole?'];
+let scenarioIndex=0;
+while(bank.length<2000){
+ const sc=scenarios[scenarioIndex%scenarios.length], op=openings[Math.floor(scenarioIndex/openings.length)%openings.length], end=endings[Math.floor(scenarioIndex/endings.length)%endings.length];
+ const q=`${op} ${contexts[Math.floor(scenarioIndex/3)%contexts.length]}: ${sc.prompt} ${end}`;
+ // Each item uses a distinct scenario wording; option positions are randomized.
+ addQ(sc.c,q,[sc.right,...sc.wrong],0,sc.exp);
+ scenarioIndex++;
+}
+// Mescola l'intera banca all'avvio di ogni nuova sessione; il filtro per materia resta disponibile.
+
 const subjects=[...new Set(bank.map(x=>x.c))];
 const subject=document.getElementById('subject');
 subjects.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;subject.appendChild(o)});
-document.getElementById('bankCount').textContent=`Quesiti disponibili: ${bank.length.toLocaleString('it-IT')}`;
+document.getElementById('bankCount').textContent=`Quesiti disponibili: ${bank.length}`;
 let questions=[], answers={}, index=0, mode='practice', finished=false;
 const $=id=>document.getElementById(id);
 function start(){
  const s=subject.value; let pool=bank.filter(q=>s==='all'||q.c===s);
- const wanted=Math.min(40,pool.length);
+ const wanted=$('count').value==='all'?pool.length:Math.min(Number($('count').value),pool.length);
  // Shuffle to vary each session
- pool=pool.slice().sort(()=>Math.random()-.5); questions=pool.slice(0,wanted);answers={};index=0;mode=$('mode').value;finished=false;
+ pool=shuffle(pool); questions=pool.slice(0,wanted);answers={};index=0;mode=$('mode').value;finished=false;
  $('setup').classList.add('hidden');$('results').classList.add('hidden');$('quizArea').classList.remove('hidden');render();
 }
 function render(){
@@ -170,17 +196,14 @@ function render(){
 }
 function setFeedback(el,q,a){el.classList.remove('hidden');el.innerHTML=`<div class="${a===q.a?'correct':'wrong'}">${a===q.a?'Risposta corretta':'Risposta errata'}.</div><div>${escapeHtml(q.e)}</div><div class="small">Risposta esatta: ${escapeHtml(q.o[q.a])}</div>`}
 function showFeedback(i){const fb=$('fb'+i);if(fb)setFeedback(fb,questions[i],answers[i])}
-function updateStats(){const correct=questions.reduce((n,q,i)=>n+(answers[i]===q.a?1:0),0);$('progressText').textContent=`Domanda ${index+1} di ${questions.length}`;$('scoreText').textContent=`Corrette: ${correct} · Errori: ${Object.keys(answers).length-correct}/5`; $('answeredText').textContent=`Risposte: ${Object.keys(answers).length}/${questions.length}`;$('progress').value=(Object.keys(answers).length/questions.length)*100}
+function updateStats(){const correct=questions.reduce((n,q,i)=>n+(answers[i]===q.a?1:0),0);$('progressText').textContent=`Domanda ${index+1} di ${questions.length}`;$('scoreText').textContent=`Punteggio: ${correct}/${Object.keys(answers).length} risposte corrette`; $('answeredText').textContent=`Risposte: ${Object.keys(answers).length}/${questions.length}`;$('progress').value=(Object.keys(answers).length/questions.length)*100}
 function renderButtons(){ $('back').disabled=index===0;$('next').classList.toggle('hidden',index===questions.length-1||finished);$('finish').classList.toggle('hidden',mode!=='exam'||finished);$('next').disabled=index>=questions.length-1}
 function go(n){index=Math.max(0,Math.min(questions.length-1,n));document.querySelectorAll('.question').forEach((el,i)=>el.classList.toggle('hidden',i!==index));updateStats();renderButtons();window.scrollTo({top:0,behavior:'smooth'})}
 function finish(){
  finished=true;
  questions.forEach((q,i)=>{const card=$('q'+i);card.classList.remove('hidden');card.querySelectorAll('input').forEach(inp=>inp.disabled=true);setFeedback($('fb'+i),q,answers[i]===undefined?-1:answers[i]);});
  const correct=questions.reduce((n,q,i)=>n+(answers[i]===q.a?1:0),0),miss=questions.length-Object.keys(answers).length;
- $('results').classList.remove('hidden');
-  const errors=questions.length-correct;
-  const passed=errors<=5;
-  $('results').innerHTML=`<h2>Risultato della simulazione</h2><p style="font-size:1.2rem"><strong>${passed?'PROVA SUPERATA':'PROVA NON SUPERATA'}</strong></p><p><strong>${correct}/${questions.length}</strong> risposte corrette (${Math.round(correct/questions.length*100)}%).</p><p>Errori: ${errors} — limite massimo: 5.</p><p>Risposte non date: ${miss} (conteggiate come errori).</p><p>${passed?'Hai rispettato la soglia prevista dalla simulazione. Continua ad allenarti sulle materie più difficili.':'Hai superato il limite di errori. Ripassa le spiegazioni e riprova con una nuova sessione.'}</p><button id="retry">Nuova sessione</button>`;
+ $('results').classList.remove('hidden');$('results').innerHTML=`<h2>Risultato della simulazione</h2><p style="font-size:1.2rem"><strong>${correct}/${questions.length}</strong> risposte corrette (${Math.round(correct/questions.length*100)}%).</p><p>Risposte non date: ${miss}.</p><p>${questions.length===40?(miss===0&&questions.length-correct<=5?'Hai rispettato la soglia di massimo 5 errori.':questions.length-correct<=5?'Soglia raggiunta: massimo 5 errori, considerando anche le risposte non date.':'Hai superato la soglia di 5 errori: ripassa e riprova.'):correct/questions.length>=.8?'Buona preparazione: continua a consolidare le materie più difficili.':correct/questions.length>=.6?'Base discreta: rivedi le spiegazioni delle risposte sbagliate.':'Conviene ripassare gli argomenti e ripetere il test.'}</p><button id="retry">Nuova sessione</button>`;
  $('retry').addEventListener('click',()=>{ $('quizArea').classList.add('hidden');$('setup').classList.remove('hidden');$('results').classList.add('hidden');window.scrollTo({top:0,behavior:'smooth'})});
  $('finish').classList.add('hidden');$('next').classList.add('hidden');$('back').classList.add('hidden');$('results').scrollIntoView({behavior:'smooth'});
 }
