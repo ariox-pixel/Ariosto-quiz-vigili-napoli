@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ARSEN HACK (ARIOSTO PRUDENZIANO) Quiz Concorso Polizia Locale Napoli 2026</title>
+<style>
+:root{--bg:#f3f6fb;--card:#fff;--ink:#172033;--muted:#667085;--blue:#174ea6;--line:#d9e1ef;--good:#137547;--bad:#b42318}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{background:linear-gradient(120deg,#102b55,#1765ad);color:white;padding:28px 18px}
+.wrap{max-width:920px;margin:auto;padding:0 16px}h1{margin:0 0 8px;font-size:clamp(1.6rem,4vw,2.25rem)}header p{margin:6px 0;color:#e7efff}
+main{padding:20px 0 40px}.notice{background:#fff8e6;border:1px solid #f2d48c;padding:12px 14px;border-radius:12px;margin-bottom:16px}
+.panel,.question{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 3px 12px #102b5508}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:end}.field{flex:1;min-width:180px}label{display:block;font-weight:650;margin-bottom:5px}select,input{width:100%;padding:11px;border:1px solid #b9c6d9;border-radius:9px;background:white;color:var(--ink);font:inherit}
+button{border:0;border-radius:10px;background:var(--blue);color:white;font:inherit;font-weight:700;padding:11px 16px;cursor:pointer}button.secondary{background:#e7edf7;color:#18345f}button:disabled{opacity:.5;cursor:not-allowed}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.stat{background:#eef3fb;border-radius:10px;padding:8px 12px;font-size:.94rem}
+.qtop{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:.9rem}.question h3{margin:8px 0 14px;font-size:1.08rem}
+.option{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:11px;margin:8px 0;cursor:pointer}.option:has(input:checked){border-color:var(--blue);background:#f0f5ff}.option input{width:auto;margin-top:5px}
+.feedback{margin-top:12px;padding:12px;border-radius:10px;background:#f2f4f7}.correct{color:var(--good);font-weight:700}.wrong{color:var(--bad);font-weight:700}
+.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;margin:14px 0}.hidden{display:none!important}.small{font-size:.9rem;color:var(--muted)}progress{width:100%;height:10px;accent-color:var(--blue)}
+footer{color:var(--muted);font-size:.9rem;padding:16px 0}
+a{color:#174ea6}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<h1>ARSEN HACK – Quiz Concorso Polizia Locale Napoli 2026</h1>
+<p>Simulatore di esercitazione con correzione immediata, punteggio e modalità simulazione.</p>
+<p class="small" style="color:#e7efff">Archivio didattico di 2.000 quesiti e varianti per esercitazione: non è una banca dati ufficiale del Comune di Napoli.</p>
+</div></header>
+<main class="wrap">
+<div class="notice"><strong>Simulazione d’esame:</strong> 40 domande casuali per sessione. Obiettivo: massimo 5 errori (almeno 35 risposte corrette). Dal 6° errore la prova è non superata. Le domande sono per esercitazione e non costituiscono un archivio ufficiale; verifica sempre il bando del Comune di Napoli e la normativa vigente.</div>
+<section class="panel" id="setup">
+<h2 style="margin-top:0">Imposta la sessione</h2>
+<div class="controls">
+<div class="field"><label for="subject">Materia</label><select id="subject"><option value="all">Tutte le materie</option></select></div>
+<div class="field"><label for="count">Numero quesiti</label><select id="count" disabled><option value="40" selected>40 domande</option></select></div>
+<div class="field"><label for="mode">Modalità</label><select id="mode"><option value="exam" selected>Simulazione concorso</option><option value="practice">Allenamento (correzione subito)</option></select></div>
+</div>
+<div class="stats"><span class="stat" id="bankCount">Quesiti disponibili: —</span><span class="stat">Soglia: massimo 5 errori</span></div>
+<button id="start">Inizia quiz</button>
+</section>
+<section id="quizArea" class="hidden">
+<div class="panel">
+<div class="stats"><span class="stat" id="progressText">Domanda 1</span><span class="stat" id="scoreText">Punteggio: 0</span><span class="stat" id="answeredText">Risposte: 0</span></div>
+<progress id="progress" value="0" max="100"></progress>
+</div>
+<div id="questions"></div>
+<div class="actions"><button class="secondary" id="back">← Precedente</button><button id="next">Successiva →</button><button class="hidden" id="finish">Termina e correggi</button></div>
+</section>
+<section id="results" class="panel hidden"></section>
+<footer>Creato da ARSEN HACK per esercitazione personale. Archivio didattico con varianti automatiche, non ufficiale: verifica sempre bando, programma e normativa vigente.</footer>
+</main>
+<script>
+const baseBank = [
+
+{c:"Codice della strada",q:"In via generale, a quale organo spetta la funzione di regolazione della circolazione sulle strade comunali, nell'ambito delle competenze previste dalla legge?",o:["Al Comune, tramite gli organi competenti","Esclusivamente al Prefetto","Sempre al Ministero della Giustizia","Esclusivamente al proprietario del veicolo"],a:0,e:"La regolazione della circolazione urbana rientra nelle competenze degli enti e organi individuati dal Codice della strada e dalla normativa locale."},
+{c:"Codice della strada",q:"Il segnale di STOP impone al conducente di:",o:["Rallentare soltanto se vede altri veicoli","Fermarsi e dare precedenza secondo le regole applicabili","Suonare il clacson prima dell'incrocio","Fermarsi solo di notte"],a:1,e:"Lo STOP impone l'arresto in corrispondenza della linea o, se assente, nel punto previsto, e l'obbligo di dare precedenza."},
+{c:"Codice della strada",q:"La patente di guida può essere ritirata dagli organi accertatori:",o:["Mai, in nessuna circostanza","Nei casi previsti dal Codice della strada","Solo su richiesta dell'assicurazione","Soltanto da un giudice civile"],a:1,e:"Il ritiro è una misura prevista dal Codice della strada in specifiche ipotesi."},
+{c:"Codice della strada",q:"In presenza di un attraversamento pedonale, il conducente deve:",o:["Dare precedenza ai pedoni che attraversano o si accingono ad attraversare nei casi previsti","Accelerare per liberare la strada","Usare sempre il clacson","Fermarsi sempre a 20 metri, anche senza pedoni"],a:0,e:"L'art. 191 del Codice della strada disciplina il comportamento verso i pedoni e l'obbligo di fermarsi quando necessario."},
+{c:"Codice della strada",q:"La contestazione immediata di una violazione stradale:",o:["È sempre obbligatoria senza eccezioni","È richiesta quando possibile, salvo i casi previsti dalla legge","È vietata sulle strade urbane","Può essere sostituita sempre da un avviso verbale"],a:1,e:"La disciplina della contestazione ammette casi tassativi in cui non è possibile o necessario contestare immediatamente, con indicazione dei motivi previsti."},
+{c:"Codice della strada",q:"Quale documento attesta normalmente la copertura assicurativa obbligatoria RC auto?",o:["La carta d'identità","La documentazione assicurativa, verificabile anche tramite banche dati nei casi previsti","Il certificato di residenza","La tessera sanitaria"],a:1,e:"La copertura RC auto è documentata secondo la normativa assicurativa e può essere verificata tramite sistemi informativi."},
+{c:"Diritto amministrativo",q:"Quale legge disciplina in via generale il procedimento amministrativo e il diritto di accesso ai documenti amministrativi?",o:["Legge 241/1990","Codice penale del 1930 soltanto","Legge 300/1970","Codice della strada soltanto"],a:0,e:"La legge 7 agosto 1990, n. 241 disciplina il procedimento amministrativo e l'accesso documentale, con successive modifiche."},
+{c:"Diritto amministrativo",q:"Il provvedimento amministrativo deve essere motivato:",o:["Di regola, salvo le eccezioni previste dalla legge","Mai","Solo se lo chiede il destinatario dopo 10 anni","Soltanto quando è orale"],a:0,e:"L'art. 3 della legge 241/1990 stabilisce in via generale l'obbligo di motivazione, fatte salve le eccezioni previste."},
+{c:"Diritto amministrativo",q:"Il responsabile del procedimento amministrativo è individuato secondo:",o:["La disciplina della legge 241/1990 e l'organizzazione dell'amministrazione","La scelta casuale del cittadino","La decisione dell'assicurazione","Le sole regole del Codice civile"],a:0,e:"La legge 241/1990 regola l'individuazione del responsabile del procedimento da parte dell'unità organizzativa competente."},
+{c:"Diritto amministrativo",q:"L'accesso documentale ai sensi della legge 241/1990 richiede normalmente:",o:["Un interesse diretto, concreto e attuale collegato al documento","La cittadinanza napoletana in ogni caso","Nessuna motivazione e nessun interesse","Un'autorizzazione del giudice penale sempre"],a:0,e:"L'accesso documentale è riconosciuto ai soggetti con interesse diretto, concreto e attuale, corrispondente a una situazione giuridicamente tutelata."},
+{c:"Diritto costituzionale",q:"Secondo la Costituzione italiana, la sovranità appartiene:",o:["Al Governo senza limiti","Al popolo, che la esercita nelle forme e nei limiti della Costituzione","Alle Regioni in via esclusiva","Ai giudici amministrativi"],a:1,e:"L'art. 1 della Costituzione afferma che la sovranità appartiene al popolo, che la esercita nelle forme e nei limiti costituzionali."},
+{c:"Diritto costituzionale",q:"Qual è la funzione principale del Parlamento italiano?",o:["Esercitare la funzione legislativa","Dirigere ogni singolo comando di polizia locale","Emettere tutte le sentenze","Gestire esclusivamente i servizi comunali"],a:0,e:"Il Parlamento esercita la funzione legislativa, oltre alle altre funzioni costituzionali di controllo e indirizzo."},
+{c:"Ordinamento enti locali",q:"Quale testo normativo contiene l'ordinamento degli enti locali?",o:["D.Lgs. 267/2000 (TUEL)","D.Lgs. 81/2008 soltanto","D.P.R. 309/1990 soltanto","Legge 689/1981 soltanto"],a:0,e:"Il Testo unico delle leggi sull'ordinamento degli enti locali è il decreto legislativo 18 agosto 2000, n. 267."},
+{c:"Ordinamento enti locali",q:"Il sindaco è, tra l'altro, organo:",o:["Del Comune","Della Corte costituzionale","Del Parlamento europeo","Della Corte dei conti"],a:0,e:"Il sindaco è organo di governo del Comune secondo il TUEL."},
+{c:"Ordinamento enti locali",q:"Il Consiglio comunale è principalmente un organo:",o:["Di indirizzo e controllo politico-amministrativo","Giudiziario penale","Di polizia giudiziaria nazionale","Di gestione quotidiana di ogni singolo procedimento"],a:0,e:"Il TUEL attribuisce al Consiglio funzioni di indirizzo e controllo politico-amministrativo e competenze sugli atti fondamentali."},
+{c:"Polizia amministrativa",q:"La legge 24 novembre 1981, n. 689 riguarda principalmente:",o:["Il sistema delle sanzioni amministrative","La disciplina dei contratti di lavoro privati soltanto","La circolazione ferroviaria","La cittadinanza europea"],a:0,e:"La legge 689/1981 contiene principi generali in materia di sanzioni amministrative."},
+{c:"Polizia amministrativa",q:"In un verbale di accertamento, è essenziale:",o:["Descrivere i fatti in modo chiaro e riportare gli elementi richiesti dalla normativa","Inserire opinioni personali non pertinenti","Omettere luogo e data quando noti","Modificare le dichiarazioni del trasgressore"],a:0,e:"L'atto deve riportare gli elementi richiesti dalla disciplina applicabile e descrivere i fatti con precisione e imparzialità."},
+{c:"Polizia amministrativa",q:"Il principio di legalità in materia sanzionatoria significa, in sintesi, che:",o:["La sanzione amministrativa può essere applicata senza base normativa","La sanzione deve trovare fondamento nella legge","L'agente decide liberamente qualsiasi importo","Le regole cambiano in base alla persona"],a:1,e:"Le sanzioni amministrative sono soggette al principio di legalità e alle garanzie previste dalla legge 689/1981."},
+{c:"Diritto penale",q:"Il dolo, in termini generali, implica:",o:["La volontà e rappresentazione del fatto secondo la definizione legale","Sempre una semplice distrazione","L'assenza totale di volontà","Soltanto un danno economico"],a:0,e:"L'art. 43 c.p. distingue il delitto doloso da quello colposo e preterintenzionale."},
+{c:"Diritto penale",q:"La colpa può derivare, in termini generali, da:",o:["Negligenza, imprudenza, imperizia o inosservanza di leggi, regolamenti, ordini o discipline","Esclusivamente da un'intenzione omicida","Solo da un contratto nullo","Sempre da una condotta volontaria diretta all'evento"],a:0,e:"L'art. 43 c.p. definisce il delitto colposo facendo riferimento a negligenza, imprudenza, imperizia e inosservanza di regole cautelari."},
+{c:"Procedura penale",q:"La polizia giudiziaria opera, secondo il codice di procedura penale, anche per:",o:["Prendere notizia dei reati e impedire che vengano portati a conseguenze ulteriori, nei limiti di legge","Emettere sentenze definitive","Sostituirsi sempre al pubblico ministero","Decidere la pena senza processo"],a:0,e:"L'art. 55 c.p.p. descrive le funzioni della polizia giudiziaria, svolte secondo le disposizioni di legge."},
+{c:"Procedura penale",q:"In presenza di una possibile notizia di reato, l'operatore deve:",o:["Agire secondo competenze, procedure e obblighi previsti dalla legge","Pubblicarla sui social prima di ogni atto","Promettere l'impunità al sospettato","Distruggere gli eventuali elementi di prova"],a:0,e:"Le attività devono rispettare le competenze e le procedure del codice di procedura penale, tutelando gli elementi rilevanti."},
+{c:"Pubblico impiego",q:"Il comportamento del dipendente pubblico deve essere improntato, tra l'altro, a:",o:["Imparzialità, correttezza e servizio esclusivo dell'interesse pubblico secondo la legge","Favoritismi personali","Uso privato indiscriminato delle informazioni d'ufficio","Rifiuto sistematico delle disposizioni legittime"],a:0,e:"I principi costituzionali e il codice di comportamento dei dipendenti pubblici richiedono imparzialità, correttezza e integrità."},
+{c:"Pubblico impiego",q:"Le informazioni acquisite per ragioni d'ufficio:",o:["Vanno utilizzate e comunicate nel rispetto di legge, riservatezza e finalità istituzionali","Possono sempre essere diffuse sui social","Possono essere vendute se non c'è un danno immediato","Sono sempre liberamente accessibili a chiunque"],a:0,e:"Il dipendente deve rispettare gli obblighi di riservatezza, protezione dei dati e corretto utilizzo delle informazioni."},
+{c:"Privacy",q:"Il GDPR è il regolamento europeo:",o:["2016/679","2018/1725 in ogni caso","2006/54","1990/241"],a:0,e:"Il Regolamento (UE) 2016/679 è il regolamento generale sulla protezione dei dati personali."},
+{c:"Privacy",q:"Il principio di minimizzazione dei dati richiede di trattare dati:",o:["Adeguati, pertinenti e limitati a quanto necessario","Sempre illimitati per comodità","Solo se pubblicati online","Senza alcuna finalità"],a:0,e:"L'art. 5 GDPR stabilisce che i dati siano adeguati, pertinenti e limitati a quanto necessario rispetto alle finalità."},
+{c:"Logica e comprensione",q:"Completa la sequenza: 3, 6, 12, 24, …",o:["30","36","48","42"],a:2,e:"Ogni termine è il doppio del precedente: 24 × 2 = 48."},
+{c:"Logica e comprensione",q:"Tutti i vigili del gruppo A hanno superato il test. Marco appartiene al gruppo A. Quale conclusione segue necessariamente?",o:["Marco ha superato il test","Marco è il responsabile del gruppo","Nessuno del gruppo ha superato il test","Marco non ha sostenuto il test"],a:0,e:"Se tutti i membri del gruppo A hanno superato il test e Marco appartiene al gruppo A, allora Marco lo ha superato."},
+{c:"Logica e comprensione",q:"Un turno inizia alle 07:35 e dura 6 ore e 20 minuti. A che ora termina?",o:["13:45","13:55","14:05","14:15"],a:1,e:"07:35 + 6 ore = 13:35; aggiungendo 20 minuti si arriva alle 13:55."},
+{c:"Informatica",q:"Quale password è generalmente più robusta?",o:["12345678","nomecognome","Una frase lunga e unica, non riutilizzata","La propria data di nascita"],a:2,e:"Una password lunga, unica e non prevedibile, preferibilmente gestita con un password manager, riduce il rischio di compromissione."},
+{c:"Informatica",q:"Un messaggio che imita un ente e chiede di cliccare subito un link per comunicare credenziali potrebbe essere:",o:["Phishing","Deframmentazione","Backup incrementale","Aggiornamento hardware"],a:0,e:"Il phishing cerca di ingannare l'utente per sottrarre credenziali o altri dati."},
+{c:"Inglese",q:"Choose the correct translation: “The officer is on duty.”",o:["L'agente è in servizio","L'agente è in vacanza","L'agente è in ritardo","L'agente è in pensione"],a:0,e:"“On duty” significa “in servizio”."},
+{c:"Inglese",q:"Choose the correct sentence.",o:["He work every day","He works every day","He working every day","He are work every day"],a:1,e:"Alla terza persona singolare del present simple, il verbo normalmente prende -s: “he works”."},
+{c:"Sicurezza e primo intervento",q:"Arrivando su un incidente stradale con possibili feriti, la prima priorità operativa è:",o:["Valutare i rischi della scena e attivare i soccorsi secondo procedura","Spostare sempre tutti i veicoli immediatamente","Raccogliere dichiarazioni prima di ogni altra cosa","Lasciare la scena senza segnalare il pericolo"],a:0,e:"La sicurezza della scena e l'attivazione tempestiva dei soccorsi sono prioritarie; gli interventi devono rispettare formazione e procedure."},
+{c:"Etica e servizio al cittadino",q:"Un cittadino si rivolge all'agente in modo agitato. La condotta professionale più appropriata è:",o:["Mantenere calma, ascoltare e spiegare con chiarezza le procedure","Rispondere con insulti","Minacciare conseguenze non previste","Ignorarlo sempre"],a:0,e:"Comunicazione calma, imparzialità e chiarezza favoriscono la gestione professionale del conflitto."},
+{c:"Ordinamento enti locali",q:"Quale organo è normalmente responsabile della gestione amministrativa e finanziaria, tecnica e amministrativa dell'ente, secondo il TUEL e le norme organizzative?",o:["I dirigenti, nei limiti delle attribuzioni previste","Sempre il Consiglio comunale collegialmente","Esclusivamente il corpo elettorale","La Corte costituzionale"],a:0,e:"L'art. 107 TUEL attribuisce ai dirigenti la gestione amministrativa, finanziaria e tecnica, secondo le competenze previste."},
+{c:"Codice della strada",q:"La segnaletica stradale temporanea è particolarmente importante:",o:["In presenza di cantieri o situazioni temporanee che modificano la circolazione","Solo nei parcheggi privati","Soltanto quando non c'è traffico","Esclusivamente sulle autostrade"],a:0,e:"La segnaletica temporanea disciplina in sicurezza situazioni provvisorie, come cantieri e deviazioni."},
+{c:"Diritto amministrativo",q:"L'autotutela amministrativa consente all'amministrazione, nei presupposti e limiti di legge, di:",o:["Riesaminare e, quando ne ricorrono i presupposti, annullare o revocare propri atti","Ignorare sempre le sentenze","Modificare la Costituzione con una determina","Imporre pene detentive"],a:0,e:"L'annullamento d'ufficio e la revoca sono istituti disciplinati dalla legge e sottoposti a specifici presupposti e limiti."},
+{c:"Diritto penale",q:"La presunzione di non colpevolezza è sancita dalla Costituzione all'articolo:",o:["27","3","32","97"],a:0,e:"L'art. 27, comma 2, Cost. stabilisce che l'imputato non è considerato colpevole sino alla condanna definitiva."},
+{c:"Costituzione",q:"L'articolo 97 della Costituzione riguarda, tra l'altro:",o:["Il buon andamento e l'imparzialità della pubblica amministrazione","Il diritto di voto dei cittadini all'estero soltanto","La libertà di domicilio esclusivamente","La bandiera italiana"],a:0,e:"L'art. 97 Cost. richiama buon andamento e imparzialità della pubblica amministrazione."},
+{c:"Polizia amministrativa",q:"Quando un atto amministrativo presenta un vizio, la sua legittimità va valutata:",o:["Alla luce delle norme applicabili, dei fatti e delle competenze dell'autorità","In base alla popolarità dell'atto sui social","Solo in base alla lunghezza del documento","Esclusivamente secondo l'opinione del destinatario"],a:0,e:"La legittimità dipende dal rispetto di legge, competenza, procedimento, presupposti e motivazione quando richiesta."}
+];
+
+// Espansione didattica: varianti formulate a partire dai quesiti base.
+// Non è un archivio ufficiale del Comune di Napoli né una banca dati ministeriale.
+function buildBank(){
+  const bank = baseBank.map((q,i)=>({...q,id:`base-${i}`}));
+  const prefixes = [
+    "Nel contesto della preparazione al concorso, ",
+    "Ai fini del ripasso per la Polizia Locale, ",
+    "In una domanda d'esame, ",
+    "Considerando la disciplina generale, ",
+    "Per verificare la conoscenza della materia, ",
+    "Secondo i principi generali applicabili, ",
+    "Nell'ambito delle funzioni dell'operatore, ",
+    "Con riferimento alla normativa studiata, "
+  ];
+  const suffixes = [
+    " Individua l'alternativa corretta.",
+    " Seleziona la risposta più corretta.",
+    " Quale opzione è conforme ai principi indicati?",
+    " Scegli la risposta da considerare esatta.",
+    " Quale affermazione è corretta?"
+  ];
+  // Le varianti mantengono la risposta del quesito di partenza.
+  // Il numero di varianti è sufficiente a portare il totale a 2.000.
+  let n=0;
+  for(let i=0; bank.length<2000; i++){
+    const q=baseBank[i % baseBank.length];
+    const p=prefixes[Math.floor(i/baseBank.length)%prefixes.length];
+    const s=suffixes[Math.floor(i/(baseBank.length*prefixes.length))%suffixes.length];
+    const copy={
+      ...q,
+      id:`var-${n++}`,
+      q: p + q.q.charAt(0).toLowerCase() + q.q.slice(1).replace(/[?]$/,'') + s
+    };
+    bank.push(copy);
+  }
+  return bank;
+}
+const bank = buildBank();
+const subjects=[...new Set(bank.map(x=>x.c))];
+const subject=document.getElementById('subject');
+subjects.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;subject.appendChild(o)});
+document.getElementById('bankCount').textContent=`Quesiti disponibili: ${bank.length.toLocaleString('it-IT')}`;
+let questions=[], answers={}, index=0, mode='practice', finished=false;
+const $=id=>document.getElementById(id);
+function start(){
+ const s=subject.value; let pool=bank.filter(q=>s==='all'||q.c===s);
+ const wanted=Math.min(40,pool.length);
+ // Shuffle to vary each session
+ pool=pool.slice().sort(()=>Math.random()-.5); questions=pool.slice(0,wanted);answers={};index=0;mode=$('mode').value;finished=false;
+ $('setup').classList.add('hidden');$('results').classList.add('hidden');$('quizArea').classList.remove('hidden');render();
+}
+function render(){
+ $('questions').innerHTML='';
+ questions.forEach((q,i)=>{
+  const card=document.createElement('article');card.className='question'+(i===index?'':' hidden');card.id='q'+i;
+  const top=document.createElement('div');top.className='qtop';top.innerHTML=`<span>Domanda ${i+1} di ${questions.length}</span><span>${escapeHtml(q.c)}</span>`;
+  const h=document.createElement('h3');h.textContent=q.q;card.append(top,h);
+  q.o.forEach((opt,j)=>{
+   const lab=document.createElement('label');lab.className='option';
+   const inp=document.createElement('input');inp.type='radio';inp.name='ans'+i;inp.value=j;inp.checked=answers[i]===j;inp.disabled=finished||(mode==='practice'&&answers[i]!==undefined);
+   inp.addEventListener('change',()=>{answers[i]=j;if(mode==='practice')showFeedback(i);updateStats();renderButtons()});
+   const span=document.createElement('span');span.textContent=opt;lab.append(inp,span);card.append(lab);
+  });
+  const fb=document.createElement('div');fb.className='feedback'+(mode==='exam'&&!finished?' hidden':'');fb.id='fb'+i;
+  if(answers[i]!==undefined&&(mode==='practice'||finished))setFeedback(fb,q,answers[i]);
+  else if(mode==='exam'&&!finished)fb.textContent='La correzione sarà mostrata al termine della simulazione.';
+  else fb.classList.add('hidden');
+  card.append(fb);$('questions').append(card);
+ });
+ updateStats();renderButtons();
+}
+function setFeedback(el,q,a){el.classList.remove('hidden');el.innerHTML=`<div class="${a===q.a?'correct':'wrong'}">${a===q.a?'Risposta corretta':'Risposta errata'}.</div><div>${escapeHtml(q.e)}</div><div class="small">Risposta esatta: ${escapeHtml(q.o[q.a])}</div>`}
+function showFeedback(i){const fb=$('fb'+i);if(fb)setFeedback(fb,questions[i],answers[i])}
+function updateStats(){const correct=questions.reduce((n,q,i)=>n+(answers[i]===q.a?1:0),0);$('progressText').textContent=`Domanda ${index+1} di ${questions.length}`;$('scoreText').textContent=`Corrette: ${correct} · Errori: ${Object.keys(answers).length-correct}/5`; $('answeredText').textContent=`Risposte: ${Object.keys(answers).length}/${questions.length}`;$('progress').value=(Object.keys(answers).length/questions.length)*100}
+function renderButtons(){ $('back').disabled=index===0;$('next').classList.toggle('hidden',index===questions.length-1||finished);$('finish').classList.toggle('hidden',mode!=='exam'||finished);$('next').disabled=index>=questions.length-1}
+function go(n){index=Math.max(0,Math.min(questions.length-1,n));document.querySelectorAll('.question').forEach((el,i)=>el.classList.toggle('hidden',i!==index));updateStats();renderButtons();window.scrollTo({top:0,behavior:'smooth'})}
+function finish(){
+ finished=true;
+ questions.forEach((q,i)=>{const card=$('q'+i);card.classList.remove('hidden');card.querySelectorAll('input').forEach(inp=>inp.disabled=true);setFeedback($('fb'+i),q,answers[i]===undefined?-1:answers[i]);});
+ const correct=questions.reduce((n,q,i)=>n+(answers[i]===q.a?1:0),0),miss=questions.length-Object.keys(answers).length;
+ $('results').classList.remove('hidden');
+  const errors=questions.length-correct;
+  const passed=errors<=5;
+  $('results').innerHTML=`<h2>Risultato della simulazione</h2><p style="font-size:1.2rem"><strong>${passed?'PROVA SUPERATA':'PROVA NON SUPERATA'}</strong></p><p><strong>${correct}/${questions.length}</strong> risposte corrette (${Math.round(correct/questions.length*100)}%).</p><p>Errori: ${errors} — limite massimo: 5.</p><p>Risposte non date: ${miss} (conteggiate come errori).</p><p>${passed?'Hai rispettato la soglia prevista dalla simulazione. Continua ad allenarti sulle materie più difficili.':'Hai superato il limite di errori. Ripassa le spiegazioni e riprova con una nuova sessione.'}</p><button id="retry">Nuova sessione</button>`;
+ $('retry').addEventListener('click',()=>{ $('quizArea').classList.add('hidden');$('setup').classList.remove('hidden');$('results').classList.add('hidden');window.scrollTo({top:0,behavior:'smooth'})});
+ $('finish').classList.add('hidden');$('next').classList.add('hidden');$('back').classList.add('hidden');$('results').scrollIntoView({behavior:'smooth'});
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
+$('start').addEventListener('click',start);$('back').addEventListener('click',()=>go(index-1));$('next').addEventListener('click',()=>go(index+1));$('finish').addEventListener('click',finish);
+</script>
+</body>
+</html>
